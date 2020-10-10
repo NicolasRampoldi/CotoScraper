@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+lxml-4.5.2-cp39-cp39-win_amd64
+Twisted-20.3.0-cp39-cp39-win_amd64
