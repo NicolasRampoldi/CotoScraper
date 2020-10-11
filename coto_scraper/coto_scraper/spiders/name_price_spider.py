@@ -1,4 +1,6 @@
 import scrapy
+import re
+
 
 class namePriceSpider(scrapy.Spider):
     name = 'namePrice'
@@ -10,6 +12,12 @@ class namePriceSpider(scrapy.Spider):
         all_category_products = response.xpath('//*[@id="products"]')
         for product in all_category_products:
             name = product.xpath('//div[@class="descrip_full"]/text()').extract()
-            price = product.xpath('//span[@class ="atg_store_newPrice"]/text()').extract()
-            yield{'name': name,
-                  'price': price}
+            pre_price = product.xpath('//span[@class ="atg_store_newPrice"]/br/text()').extract()
+            # regex = re.compile(r"\$[1-9]+[0-9]*(\.[0-9]+)?")
+            # price = regex.findall(pre_price)
+            # real_price = price[0]
+            yield {'name': name,
+                   'price': pre_price}
+        next_url = response.xpath('//*[@class = " " and @title = "Siguiente"]/@href').extract()
+        if next_url:
+            yield scrapy.Request(next_url, self.parse)
