@@ -25,3 +25,10 @@ class NamePriceSpider(scrapy.Spider):
 
             yield {'name': name,
                    'price': price}
+
+            next_page = response.xpath('//a[@title = "Siguiente"]/@href').extract_first()
+            next_page = response.urljoin(next_page)
+
+            if next_page:
+                yield scrapy.Request(url=next_page, callback=self.parse)
+
