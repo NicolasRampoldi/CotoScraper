@@ -7,7 +7,6 @@ class NamePriceSpider(scrapy.Spider):
     start_urls = [
         'https://www.cotodigital3.com.ar/sitios/cdigi/browse/'
     ]
-
     def parse(self, response):
         all_category_products = response.xpath('//*[@id="products"]')
         for product in all_category_products:
@@ -22,7 +21,6 @@ class NamePriceSpider(scrapy.Spider):
                 r'3})*('
                 r'?:[., '
                 r']\d{2})*')
-
             yield {'name': name,
                    'price': price}
 
@@ -31,4 +29,3 @@ class NamePriceSpider(scrapy.Spider):
 
             if next_page:
                 yield scrapy.Request(url=next_page, callback=self.parse)
-
