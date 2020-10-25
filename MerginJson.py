@@ -2,7 +2,7 @@ import json
 
 if __name__ == '__main__':
 
-    with open('/Users/roberto-j-catalan/CotoScraper/coto_scraper/data.json') as file:
+    with open('./coto_scraper/data.json') as file:
         data = json.load(file)
         products = []
     for page in data:
@@ -18,10 +18,10 @@ if __name__ == '__main__':
             cant_products = cant_prices
             make_change = True
         for i in range(cant_products):
-            product = {'name': names[i], 'price': prices[i]}
+            product = {'name': names[i].replace('\n','').replace('\r','').replace('\t', ''), 'price': prices[i].replace('\n', '').replace('\r', '').replace('\t', '')}
             products.append(product)
             print(product)
         if make_change:
             product = {'name': names[cant_names - 1], 'price': -1}
-    with open('products.json', 'w') as json_file:
-        json.dump(products, json_file)
+    with open('products.json', 'w', encoding='utf-8') as json_file:
+        json.dump(products, json_file, ensure_ascii=False)
