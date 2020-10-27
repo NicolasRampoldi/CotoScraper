@@ -22,12 +22,12 @@ if __name__ == '__main__':
             cant_products = cant_prices
             make_change = True
         for i in range(cant_products):
-            true_name = re.sub(' +', ' ', names[i].replace('\n','').replace('\r','').replace('\t', '').replace(' . . .', '').replace(' . . . .','').rstrip())
+            true_name = re.sub(' +', ' ', names[i].replace('\n','').replace('\r','').replace('\t', '').rstrip())
             true_name = re.sub('( \.)+', '', true_name)
             product = {'name': true_name, 'price': prices[i].replace('\n', '').replace('\r', '').replace('\t', '')}
             products.append(product)
             firebase.post('products', product)
-            sleep(15)
+            sleep(30)
             print(product)
         if make_change:
             product = {'name': names[cant_names - 1], 'price': -1}
