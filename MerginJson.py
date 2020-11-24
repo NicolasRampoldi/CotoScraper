@@ -1,10 +1,11 @@
 import json
 from firebase import firebase
 import re
+import hashlib
 from time import sleep
-firebase = firebase.FirebaseApplication('https://listy-itba-app.firebaseio.com/')
+database = firebase.FirebaseApplication('https://listy-itba-app.firebaseio.com/')
 if __name__ == '__main__':
-
+    database.delete('/','products')
     with open('./coto_scraper/data.json') as file:
         data = json.load(file)
         products = []
@@ -24,10 +25,16 @@ if __name__ == '__main__':
         for i in range(cant_products):
             true_name = re.sub(' +', ' ', names[i].replace('\n','').replace('\r','').replace('\t', '').rstrip())
             true_name = re.sub('( \.)+', '', true_name)
-            product = {'name': true_name, 'price': prices[i].replace('\n', '').replace('\r', '').replace('\t', '')}
+            product = {'name': true_name,  'price': prices[i].replace('\n', '').replace('\r', '').replace('\t', '').replace('$','')}
             products.append(product)
-            firebase.post('products', product)
-            sleep(30)
+            hash_product = hashlib.sha256(true_name.encode('utf-8')).hexdigest()
+            try:
+                database.put('/products/', hash_product, product)
+            except:
+                print('funco la excepcion')
+                database = firebase.FirebaseApplication('https://listy-itba-app.firebaseio.com/')
+                i -= 1
+
             print(product)
         if make_change:
             product = {'name': names[cant_names - 1], 'price': -1}
