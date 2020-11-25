@@ -23,13 +23,13 @@ if __name__ == '__main__':
             cant_products = cant_prices
             make_change = True
         for i in range(cant_products):
-            true_name = re.sub(' +', ' ', names[i].replace('\n','').replace('\r','').replace('\t', '').rstrip())
+            true_name = re.sub(' +', ' ', names[i].replace('\n','').replace('\r','').replace('\t', '').replace('/', ' ').rstrip())
             true_name = re.sub('( \.)+', '', true_name)
             product = {'name': true_name,  'price': prices[i].replace('\n', '').replace('\r', '').replace('\t', '').replace('$','')}
             products.append(product)
             hash_product = hashlib.sha256(true_name.encode('utf-8')).hexdigest()
             try:
-                database.put('/products/', hash_product, product)
+                database.put('/products/', true_name, product)
             except:
                 print('funco la excepcion')
                 database = firebase.FirebaseApplication('https://listy-itba-app.firebaseio.com/')

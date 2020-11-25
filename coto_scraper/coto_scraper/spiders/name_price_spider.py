@@ -1,5 +1,10 @@
+import hashlib
+
+
 import scrapy
 import re
+
+
 
 
 class NamePriceSpider(scrapy.Spider):
@@ -7,6 +12,7 @@ class NamePriceSpider(scrapy.Spider):
     start_urls = [
         'https://www.cotodigital3.com.ar/sitios/cdigi/browse/'
     ]
+
     def parse(self, response):
         all_category_products = response.xpath('//*[@id="products"]')
         for product in all_category_products:
